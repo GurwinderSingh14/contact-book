@@ -12,10 +12,8 @@ const routes = [
   { path: '/add', name: 'AddContact', component: AddContact },
   { path: '/edit/:id', name: 'EditContact', component: EditContact },
 ]
-
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  history: createWebHistory('/contact-book/')
 })
 
 export default router
