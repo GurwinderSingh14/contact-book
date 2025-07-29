@@ -1,11 +1,15 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { getContacts } from '../services/contactService'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const search = ref('')
-const contacts = ref(getContacts())
+const contacts = ref([])
+
+onMounted(() => {
+  contacts.value = getContacts()
+})
 
 const filteredContacts = computed(() => {
   return contacts.value
@@ -25,7 +29,7 @@ function viewContact(id) {
   <div>
     <input v-model="search" placeholder="Search by name..." />
     <ul>
-      <li v-for="contact in filteredContacts" :key="contact.id" @click="viewContact(contact.id)">
+      <li v-for="contact in filteredContacts" :key="contact.id" @click="viewContact(contact.id)" style="cursor:pointer;">
         {{ contact.firstName }} {{ contact.lastName }}
       </li>
     </ul>

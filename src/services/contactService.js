@@ -21,8 +21,10 @@ export function addContact(contact) {
 export function updateContact(id, updatedContact) {
   let contacts = getContacts()
   const index = contacts.findIndex(c => c.id === id)
-  contacts[index] = updatedContact
-  saveContacts(contacts)
+  if (index !== -1) {
+    contacts[index] = updatedContact
+    saveContacts(contacts)
+  }
 }
 
 export function deleteContact(id) {

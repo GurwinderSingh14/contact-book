@@ -8,12 +8,26 @@ const router = useRouter()
 const contact = ref(null)
 
 onMounted(() => {
-  contact.value = { ...getContactById(route.params.id) }
+  const existing = getContactById(route.params.id)
+  if(existing) {
+    contact.value = { ...existing }
+  } else {
+    alert('Contact not found.')
+    router.push('/')
+  }
 })
 
-function submit() {
-  updateContact(contact.value.id, contact.value)
-  router.push(`/contact/${contact.value.id}`)
+function saveEdit() {
+  if (
+    contact.value.firstName.trim() &&
+    contact.value.lastName.trim() &&
+    contact.value.email.trim()
+  ) {
+    updateContact(contact.value.id, contact.value)
+    router.push(`/contact/${contact.value.id}`)
+  } else {
+    alert('Please fill in First Name, Last Name, and Email.')
+  }
 }
 </script>
 
@@ -23,6 +37,12 @@ function submit() {
     <input v-model="contact.firstName" placeholder="First Name" />
     <input v-model="contact.lastName" placeholder="Last Name" />
     <input v-model="contact.email" placeholder="Email" />
-    <button @click="submit">Save</button>
+    <input v-model="contact.phone" placeholder="Phone" />
+    <input v-model="contact.address" placeholder="Address" />
+    <button @click="saveEdit">Save Changes</button>
+    <router-link :to="`/contact/${contact.id}`">Cancel</router-link>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
   </div>
 </template>
